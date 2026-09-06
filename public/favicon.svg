@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Luxury Gold Spectacles Icon for Paradise Optics -->
+  <circle cx="160" cy="256" r="64" stroke="#c5a880" stroke-width="24" fill="none"/>
+  <circle cx="352" cy="256" r="64" stroke="#c5a880" stroke-width="24" fill="none"/>
+  <path d="M224 256C240 236 272 236 288 256" stroke="#c5a880" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <path d="M96 256C72 256 48 230 40 200" stroke="#c5a880" stroke-width="20" stroke-linecap="round" fill="none"/>
+  <path d="M416 256C440 256 464 230 472 200" stroke="#c5a880" stroke-width="20" stroke-linecap="round" fill="none"/>
+</svg>
