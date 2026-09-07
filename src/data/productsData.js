@@ -2405,6 +2405,90 @@ export const PRODUCTS = [
   //   [SECTION: SUNGLASSES] 
   // ==========================================
   {
+    "id": "meta-01",
+    "name": "Ray-Ban | Meta Wayfarer Smart Glasses",
+    "brand": "Ray-Ban Meta",
+    "category": "sunglasses",
+    "subCategory": "Meta Smart Glasses",
+    "price": 35990,
+    "discountPrice": 32990,
+    "rating": 4.9,
+    "reviewsCount": 184,
+    "gender": "Unisex",
+    "frameShape": "Wayfarer",
+    "frameColor": "Matte Black G-15",
+    "frameMaterial": "Ultra-Light Polymer",
+    "lensCompatibility": "Camera + Open-Ear Audio Built-In",
+    "size": "Standard",
+    "sizeInfo": "Lens Width: 50mm, Bridge: 22mm, Temple: 150mm",
+    "description": "Next-gen Ray-Ban | Meta Wayfarer smart glasses. Features integrated 12MP camera, open-ear audio speakers, Meta AI voice control, 5-mic array, and custom charging case.",
+    "inStock": true,
+    "images": [
+      "/products/rm1.webp"
+    ],
+    "features": [
+      "12MP Ultra-Wide Camera & 1080p Video",
+      "Open-Ear Audio Speakers & 5-Mic Array",
+      "Meta AI Hands-Free Voice Control"
+    ]
+  },
+  {
+    "id": "meta-02",
+    "name": "Ray-Ban | Meta Headliner Smart Glasses",
+    "brand": "Ray-Ban Meta",
+    "category": "sunglasses",
+    "subCategory": "Meta Smart Glasses",
+    "price": 37990,
+    "discountPrice": 34990,
+    "rating": 4.8,
+    "reviewsCount": 98,
+    "gender": "Unisex",
+    "frameShape": "Round",
+    "frameColor": "Shiny Caramel Tortoise",
+    "frameMaterial": "Ultra-Light Polymer",
+    "lensCompatibility": "Clear to Dark Green Transitions",
+    "size": "Medium",
+    "sizeInfo": "Lens Width: 49mm, Bridge: 23mm, Temple: 150mm",
+    "description": "The Ray-Ban | Meta Headliner blends retro round framing with advanced Meta AI vision. Capture hands-free photos, stream high-fidelity audio, and take phone calls seamlessly.",
+    "inStock": true,
+    "images": [
+      "/products/rm2.webp"
+    ],
+    "features": [
+      "Hands-Free 1080p Photo & Video",
+      "High-Fidelity Open-Ear Audio",
+      "Transitions Light-Intelligent Lenses"
+    ]
+  },
+  {
+    "id": "meta-03",
+    "name": "Ray-Ban | Meta Skyler Smart Glasses",
+    "brand": "Ray-Ban Meta",
+    "category": "sunglasses",
+    "subCategory": "Meta Smart Glasses",
+    "price": 38990,
+    "discountPrice": 35990,
+    "rating": 5.0,
+    "reviewsCount": 76,
+    "gender": "Women",
+    "frameShape": "Cat Eye",
+    "frameColor": "Shiny Chalky Gray",
+    "frameMaterial": "Ultra-Light Polymer",
+    "lensCompatibility": "Cinnamon Pink Gradient & Prescription",
+    "size": "Medium",
+    "sizeInfo": "Lens Width: 52mm, Bridge: 20mm, Temple: 145mm",
+    "description": "Sleek cat-eye silhouette Ray-Ban | Meta Skyler featuring AI multi-modal vision, high-fidelity audio, instant live streaming to Instagram & Facebook.",
+    "inStock": true,
+    "images": [
+      "/products/cw1.webp"
+    ],
+    "features": [
+      "Live Stream Direct to Instagram & Facebook",
+      "Open-Ear Spatial Audio & 5-Mics",
+      "Continuous 36hr Battery with Charging Case"
+    ]
+  },
+  {
     "id": "sun-01",
     "name": "Ray-Ban Classic Aviator Polarized",
     "brand": "Ray-Ban",
@@ -3362,7 +3446,7 @@ export const PRODUCTS = [
   },
   {
     "id": "sun-35",
-    "name": "IDEE metallic ",
+    "name": "IDEE Metallic Finish Aviator",
     "brand": "IDEE",
     "category": "sunglasses",
     "subCategory": "Kids 's Collection",
