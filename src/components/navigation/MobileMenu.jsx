@@ -28,7 +28,7 @@ const MobileMenu = ({ isOpen, onClose, onOpenWishlist }) => {
     { label: "OPTICALS", path: "/products?category=eyeglasses" },
     { label: "CONTACT LENSES", path: "/products?category=contact-lenses" },
     { label: "BRANDS", path: "/brands" },
-    { label: "META", path: "/products?brand=Ray-Ban", isMeta: true },
+    { label: "META", path: "/products?brand=Ray-Ban Meta", isMeta: true },
     { label: "SERVICES", path: "/services" },
     { label: "OUR STORY", path: "/about" },
     { label: "CONTACT US", path: "/contact" },
