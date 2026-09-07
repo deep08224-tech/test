@@ -80,7 +80,7 @@ const Navbar = ({ onOpenWishlist }) => {
     { label: "OPTICALS", path: "/products?category=eyeglasses" },
     { label: "CONTACT LENSES", path: "/products?category=contact-lenses" },
     { label: "BRANDS", path: "/brands" },
-    { label: "META", path: "/products?brand=Ray-Ban", isMeta: true },
+    { label: "META", path: "/products?brand=Ray-Ban Meta", isMeta: true },
     { label: "OUR STORY", path: "/about" },
   ];
 
