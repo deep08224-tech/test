@@ -17,15 +17,42 @@ const Home = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [activeFaq, setActiveFaq] = useState(null);
 
-  const activeHeroBanner =
-    (heroBanners && heroBanners.find((b) => b.active)) ||
-    (heroBanners && heroBanners[0]) || {
+  const defaultHeroSlides = [
+    {
+      id: "hero-slide-1",
       title: "A Frame For Every Destination",
       subtitle: "From beach escapes to city summers.",
       image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop",
       cta: "Shop Now",
       link: "/products?category=sunglasses"
-    };
+    },
+    {
+      id: "hero-slide-2",
+      title: "Refined Vision. Timeless Luxury.",
+      subtitle: "Discover iconic frames handcrafted by premier luxury fashion houses.",
+      image: "/banner1.png",
+      cta: "Explore Opticals",
+      link: "/products?category=eyeglasses"
+    },
+    {
+      id: "hero-slide-3",
+      title: "Summer Sunshine & Haute Couture",
+      subtitle: "Shield your eyes in absolute luxury with polarized designer sunglasses.",
+      image: "/banner2.png",
+      cta: "Shop Sunglasses",
+      link: "/products?category=sunglasses"
+    },
+    {
+      id: "hero-slide-4",
+      title: "Effortless Clarity, Every Day",
+      subtitle: "Experience extreme breathing comfort with elite daily contact lenses.",
+      image: "/banner4.png",
+      cta: "Shop Contact Lenses",
+      link: "/products?category=contact-lenses"
+    }
+  ];
+
+  const slidesToRender = (heroBanners && heroBanners.length > 0) ? heroBanners : defaultHeroSlides;
 
   const categoryCards = [
     {
@@ -59,145 +86,145 @@ const Home = () => {
       name: "Ray-Ban",
       logo: "RAY-BAN",
       subLogo: "EST. 1937",
-      image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=600&auto=format&fit=crop"
+      image: "/rb.jfif"
     },
     {
       name: "Prada",
       logo: "PRADA",
       subLogo: "MILANO",
-      image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=600&auto=format&fit=crop"
+      image: "/pradabrand.avif"
     },
     {
       name: "Versace",
       logo: "VERSACE",
       subLogo: "ITALY",
-      image: "https://images.unsplash.com/photo-1558507652-2d9626c4e67a?q=80&w=600&auto=format&fit=crop"
+      image: "/versacebrand.jpg"
     },
     {
       name: "Burberry",
       logo: "BURBERRY",
       subLogo: "LONDON",
-      image: "https://images.unsplash.com/photo-1589156280159-27698a70f29e?q=80&w=600&auto=format&fit=crop"
+      image: "/burberrybrand.jfif"
     },
     {
       name: "Dolce & Gabbana",
       logo: "DOLCE & GABBANA",
       subLogo: "MILANO",
-      image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=600&auto=format&fit=crop"
+      image: "/dgbrand.jfif"
     },
     {
       name: "Emporio Armani",
       logo: "EMPORIO ARMANI",
       subLogo: "MILANO",
-      image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=600&auto=format&fit=crop"
+      image: "/eabrand.jfif"
     },
     {
       name: "Hugo Boss",
       logo: "BOSS",
       subLogo: "HUGO BOSS",
-      image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop"
+      image: "/hbbrand.jfif"
     },
     {
       name: "Michael Kors",
       logo: "MICHAEL KORS",
       subLogo: "NEW YORK",
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop"
+      image: "/mkbrand.jfif"
     },
     {
       name: "Coach",
       logo: "COACH",
       subLogo: "NEW YORK",
-      image: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=600&auto=format&fit=crop"
+      image: "/cbrabd.jfif"
     },
     {
       name: "Tory Burch",
       logo: "TORY BURCH",
       subLogo: "NEW YORK",
-      image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600&auto=format&fit=crop"
+      image: "/tbbrand.jfif"
     },
     {
       name: "Marc Jacobs",
       logo: "MARC JACOBS",
       subLogo: "NEW YORK",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop"
+      image: "/mjrrand.jfif"
     },
     {
       name: "Calvin Klein",
       logo: "CALVIN KLEIN",
       subLogo: "EYEWEAR",
-      image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=600&auto=format&fit=crop"
+      image: "/ckbrand.jfif"
     },
     {
       name: "Tommy Hilfiger",
       logo: "TOMMY HILFIGER",
       subLogo: "EST. 1985",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600&auto=format&fit=crop"
+      image: "/thbrand.jfif"
     },
     {
       name: "Guess",
       logo: "GUESS",
       subLogo: "LOS ANGELES",
-      image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop"
+      image: "/gbrand.jfif"
     },
     {
       name: "Oakley",
       logo: "OAKLEY",
       subLogo: "PRIZM OPTICS",
-      image: "https://images.unsplash.com/photo-1625591439851-468f34bc0865?q=80&w=600&auto=format&fit=crop"
+      image: "/obrand.jfif"
     },
     {
       name: "Carrera",
       logo: "CARRERA",
       subLogo: "SINCE 1956",
-      image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=600&auto=format&fit=crop"
+      image: "/cbrand.jfif"
     },
     {
       name: "IDEE",
       logo: "IDEE",
       subLogo: "EYEWEAR",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop"
+      image: "/idee.jfif"
     },
     {
       name: "OPIUM",
       logo: "OPIUM",
       subLogo: "EYEWEAR",
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop"
+      image: "/opiumbrand.jfif"
     },
     {
       name: "Hopper",
       logo: "HOPPER",
       subLogo: "SPECS",
-      image: "https://images.unsplash.com/photo-1463453091185-61582044d556?q=80&w=600&auto=format&fit=crop"
+      image: "/hopper.jfif"
     },
     {
       name: "Ownspecs",
       logo: "OWNSPECS",
       subLogo: "HANDCRAFTED",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop"
+      image: "/os.jfif"
     },
     {
       name: "Acuvue",
       logo: "ACUVUE",
       subLogo: "CONTACT LENSES",
-      image: "https://images.unsplash.com/photo-1583912267670-6575ad362e48?q=80&w=600&auto=format&fit=crop"
+      image: "/Acuvue.jfif"
     },
     {
       name: "Alcon",
       logo: "ALCON",
       subLogo: "VISION CARE",
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=600&auto=format&fit=crop"
+      image: "/Alcon.jfif"
     },
     {
       name: "Bausch & Lomb",
       logo: "BAUSCH + LOMB",
       subLogo: "EST. 1853",
-      image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=600&auto=format&fit=crop"
+      image: "/blbrand.jfif"
     },
     {
       name: "CooperVision",
       logo: "COOPERVISION",
       subLogo: "CONTACT LENSES",
-      image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=600&auto=format&fit=crop"
+      image: "/cvbrand.jfif"
     }
   ];
 
@@ -209,33 +236,46 @@ const Home = () => {
 
   return (
     <div className="w-full font-sans bg-white text-[#1C1B1B]">
-      {/* 1. Cinematic Single Dynamic Hero Banner */}
-      <section className="relative w-full h-[65vh] sm:h-[72vh] md:h-[78vh] bg-gray-950 text-white overflow-hidden flex items-center justify-center">
-        <div
-          className="absolute inset-0 bg-cover bg-center transition-all duration-700"
-          style={{
-            backgroundImage: `url('${activeHeroBanner.image}')`
-          }}
-        />
-        <div className="absolute inset-0 bg-black/40 z-10" />
+      {/* 1. Cinematic Swiper Hero Slider */}
+      <section className="relative w-full h-[60vh] sm:h-[70vh] md:h-[78vh] bg-gray-950 text-white overflow-hidden">
+        <Swiper
+          modules={[Autoplay, Pagination, Navigation]}
+          pagination={{ clickable: true }}
+          navigation={true}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          loop={true}
+          className="w-full h-full hero-swiper"
+        >
+          {slidesToRender.map((banner, index) => (
+            <SwiperSlide key={banner.id || index} className="relative w-full h-full flex items-center justify-center">
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-all duration-700"
+                style={{
+                  backgroundImage: `url('${banner.image}')`
+                }}
+              />
+              <div className="absolute inset-0 bg-black/45 z-10" />
 
-        {/* Centered Hero Content */}
-        <div className="relative z-20 max-w-4xl mx-auto px-4 flex flex-col items-center justify-center text-center text-white space-y-4">
-          <h1 className="text-2xl sm:text-3xl md:text-5xl font-serif font-black tracking-[0.16em] uppercase leading-tight drop-shadow-md">
-            {activeHeroBanner.title}
-          </h1>
-          <p className="text-xs sm:text-sm md:text-base font-normal tracking-[0.2em] uppercase text-gray-200 drop-shadow-sm max-w-2xl">
-            {activeHeroBanner.subtitle}
-          </p>
-          <div className="pt-3">
-            <Link
-              to={activeHeroBanner.link || "/products?category=sunglasses"}
-              className="inline-block bg-white hover:bg-gray-100 text-[#1C1B1B] text-xs font-bold uppercase tracking-widest px-8 py-3.5 rounded shadow-lg transition-transform transform hover:-translate-y-0.5"
-            >
-              {activeHeroBanner.cta || "Shop Now"}
-            </Link>
-          </div>
-        </div>
+              {/* Centered Hero Content */}
+              <div className="relative z-20 max-w-4xl mx-auto px-4 flex flex-col items-center justify-center text-center text-white space-y-4 h-full">
+                <h1 className="text-2xl sm:text-3xl md:text-5xl font-serif font-black tracking-[0.16em] uppercase leading-tight drop-shadow-md">
+                  {banner.title}
+                </h1>
+                <p className="text-xs sm:text-sm md:text-base font-normal tracking-[0.2em] uppercase text-gray-200 drop-shadow-sm max-w-2xl">
+                  {banner.subtitle}
+                </p>
+                <div className="pt-3">
+                  <Link
+                    to={banner.link || "/products"}
+                    className="inline-block bg-white hover:bg-gray-100 text-[#1C1B1B] text-xs font-bold uppercase tracking-widest px-8 py-3.5 rounded shadow-lg transition-transform transform hover:-translate-y-0.5"
+                  >
+                    {banner.cta || "Shop Now"}
+                  </Link>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </section>
 
       {/* 2. Shop Categories Section (4 in One Row) */}
@@ -281,16 +321,16 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 3. Dual Promo Section: Gifts for Him & Gifts for Her (Page 3) */}
-      <section className="py-10 max-w-7xl mx-auto px-4 md:px-8">
+      {/* 3. Dual Promo Section: Gifts for Him & Gifts for Her */}
+      <section className="py-8 max-w-7xl mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {/* Gifts For Him */}
-          <div className="group space-y-4">
-            <div className="relative aspect-[4/4.2] overflow-hidden rounded-xl bg-gray-100 shadow-xs">
+          <div className="group space-y-3">
+            <div className="relative aspect-[4/3.2] overflow-hidden rounded-xl bg-gray-100 shadow-xs">
               <img
-                src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop"
+                src="/him.jpg"
                 alt="Gifts for Him"
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-fill group-hover:scale-105 transition-transform duration-700"
               />
             </div>
             <div className="space-y-1.5 text-left">
@@ -312,12 +352,12 @@ const Home = () => {
           </div>
 
           {/* Gifts For Her */}
-          <div className="group space-y-4">
-            <div className="relative aspect-[4/4.2] overflow-hidden rounded-xl bg-gray-100 shadow-xs">
+          <div className="group space-y-3">
+            <div className="relative aspect-[4/3.2] overflow-hidden rounded-xl bg-gray-100 shadow-xs">
               <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop"
+                src="/her.jpg"
                 alt="Gifts for Her"
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-fill group-hover:scale-105 transition-transform duration-700"
               />
             </div>
             <div className="space-y-1.5 text-left">
@@ -340,7 +380,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 4. RARE AND RELOVED Section (Page 3 & 4 - Formerly Featured Eyewear) */}
+      {/* 4. COLLECTOR'S EDITION Section */}
       <section className="py-16 bg-[#FAF9F6] border-y border-gray-100">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
@@ -349,7 +389,7 @@ const Home = () => {
                 New Arrivals
               </span>
               <h2 className="text-2xl md:text-4xl font-serif font-bold text-[#1C1B1B] uppercase tracking-wide">
-                Rare and Reloved
+                Collector’s Edition
               </h2>
             </div>
             {/* Filter Tabs */}

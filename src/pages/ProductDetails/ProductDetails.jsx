@@ -147,6 +147,11 @@ const ProductDetails = () => {
     { label: product.name }
   ];
 
+  const isContactLens =
+    product.category?.toLowerCase().includes("contact") ||
+    product.category?.toLowerCase().includes("lenses") ||
+    product.subCategory?.toLowerCase().includes("contact");
+
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-8 py-4">
       {/* Breadcrumbs */}
@@ -169,7 +174,11 @@ const ProductDetails = () => {
               alt={product.name}
               style={{
                 transformOrigin: isZoomed ? `${zoomPos.x}% ${zoomPos.y}%` : "center center",
-                transform: isZoomed ? "scale(2.2)" : "scale(1)",
+                transform: isZoomed
+                  ? "scale(2.2)"
+                  : isContactLens
+                  ? "scale(1.4)"
+                  : "scale(1)",
                 transition: isZoomed ? "none" : "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
               }}
               className="max-h-[380px] md:max-h-[480px] w-auto object-contain"
@@ -240,23 +249,48 @@ const ProductDetails = () => {
 
           {/* Quick Specifications list */}
           <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-xl space-y-2.5 border border-gray-100 dark:border-gray-850 text-xs">
-            <div className="grid grid-cols-3">
-              <span className="text-gray-400 dark:text-gray-500">Frame Material</span>
-              <span className="col-span-2 font-semibold text-gray-750 dark:text-gray-200">{product.frameMaterial}</span>
-            </div>
-            <div className="grid grid-cols-3">
-              <span className="text-gray-400 dark:text-gray-500">Frame Shape</span>
-              <span className="col-span-2 font-semibold text-gray-750 dark:text-gray-200">{product.frameShape}</span>
-            </div>
-            <div className="grid grid-cols-3">
-              <span className="text-gray-400 dark:text-gray-500">Dimensions</span>
-              <span className="col-span-2 font-semibold text-gray-750 dark:text-gray-200">{product.sizeInfo}</span>
-            </div>
-            {product.lensCompatibility && (
-              <div className="grid grid-cols-3">
-                <span className="text-gray-400 dark:text-gray-500">Lens Options</span>
-                <span className="col-span-2 font-semibold text-gray-750 dark:text-gray-200">{product.lensCompatibility}</span>
-              </div>
+            {isContactLens ? (
+              <>
+                <div className="grid grid-cols-3">
+                  <span className="text-gray-400 dark:text-gray-500">Lens Type</span>
+                  <span className="col-span-2 font-semibold text-gray-750 dark:text-gray-200">
+                    {product.subCategory || "Contact Lenses"}
+                  </span>
+                </div>
+                <div className="grid grid-cols-3">
+                  <span className="text-gray-400 dark:text-gray-500">Material Type</span>
+                  <span className="col-span-2 font-semibold text-gray-750 dark:text-gray-200">
+                    {product.frameMaterial || "Hydrogel / Silicone Hydrogel"}
+                  </span>
+                </div>
+                <div className="grid grid-cols-3">
+                  <span className="text-gray-400 dark:text-gray-500">Parameters</span>
+                  <span className="col-span-2 font-semibold text-gray-750 dark:text-gray-200">
+                    {product.sizeInfo || "Base Curve: 8.5mm, Diameter: 14.2mm"}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="grid grid-cols-3">
+                  <span className="text-gray-400 dark:text-gray-500">Frame Material</span>
+                  <span className="col-span-2 font-semibold text-gray-750 dark:text-gray-200">{product.frameMaterial}</span>
+                </div>
+                <div className="grid grid-cols-3">
+                  <span className="text-gray-400 dark:text-gray-500">Frame Shape</span>
+                  <span className="col-span-2 font-semibold text-gray-750 dark:text-gray-200">{product.frameShape}</span>
+                </div>
+                <div className="grid grid-cols-3">
+                  <span className="text-gray-400 dark:text-gray-500">Dimensions</span>
+                  <span className="col-span-2 font-semibold text-gray-750 dark:text-gray-200">{product.sizeInfo}</span>
+                </div>
+                {product.lensCompatibility && (
+                  <div className="grid grid-cols-3">
+                    <span className="text-gray-400 dark:text-gray-500">Lens Options</span>
+                    <span className="col-span-2 font-semibold text-gray-750 dark:text-gray-200">{product.lensCompatibility}</span>
+                  </div>
+                )}
+              </>
             )}
           </div>
 
@@ -300,178 +334,130 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {/* Tabs Section: Specifications & Reviews */}
-      <section className="mt-16 border-t border-gray-250 dark:border-gray-800">
-        {/* Tab Headers */}
-        <div className="flex border-b border-gray-200 dark:border-gray-850">
-          <button
-            onClick={() => setActiveTab("description")}
-            className={`py-4 px-6 font-serif text-sm md:text-base font-bold uppercase tracking-wider border-b-2 transition-all ${
-              activeTab === "description"
-                ? "border-primary dark:border-gold text-primary dark:text-gold"
-                : "border-transparent text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-            }`}
-          >
+      {/* Technical Specifications Section */}
+      <section className="mt-16 border-t border-gray-250 dark:border-gray-800 pt-8">
+        <div className="border-b border-gray-200 dark:border-gray-850 pb-4 mb-8">
+          <h2 className="font-serif text-lg md:text-xl font-bold uppercase tracking-wider text-primary dark:text-gold inline-block border-b-2 border-primary dark:border-gold pb-1">
             Technical Specifications
-          </button>
-          <button
-            onClick={() => setActiveTab("reviews")}
-            className={`py-4 px-6 font-serif text-sm md:text-base font-bold uppercase tracking-wider border-b-2 transition-all ${
-              activeTab === "reviews"
-                ? "border-primary dark:border-gold text-primary dark:text-gold"
-                : "border-transparent text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-            }`}
-          >
-            Reviews ({localReviews.length})
-          </button>
+          </h2>
         </div>
 
-        {/* Tab Contents */}
-        <div className="py-8">
-          {activeTab === "description" ? (
-            /* Technical specifications sheet */
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
-              <div>
-                <h3 className="font-bold text-xs uppercase tracking-wider text-gray-450 dark:text-gray-500 mb-3">Frame Details</h3>
-                <table className="w-full text-xs md:text-sm">
-                  <tbody>
-                    <tr className="border-b border-gray-100 dark:border-gray-850">
-                      <td className="py-2.5 text-gray-400">Brand Manufacturer</td>
-                      <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.brand}</td>
-                    </tr>
-                    <tr className="border-b border-gray-100 dark:border-gray-850">
-                      <td className="py-2.5 text-gray-400">Frame Structure</td>
-                      <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.frameShape}</td>
-                    </tr>
-                    <tr className="border-b border-gray-100 dark:border-gray-850">
-                      <td className="py-2.5 text-gray-400">Primary Color</td>
-                      <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.frameColor}</td>
-                    </tr>
-                    <tr className="border-b border-gray-100 dark:border-gray-850">
-                      <td className="py-2.5 text-gray-400">Material Type</td>
-                      <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.frameMaterial}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-xs uppercase tracking-wider text-gray-450 dark:text-gray-500 mb-3">Size & Fit</h3>
-                <table className="w-full text-xs md:text-sm">
-                  <tbody>
-                    <tr className="border-b border-gray-100 dark:border-gray-850">
-                      <td className="py-2.5 text-gray-400">Frame Width Status</td>
-                      <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.size}</td>
-                    </tr>
-                    <tr className="border-b border-gray-100 dark:border-gray-850">
-                      <td className="py-2.5 text-gray-400">Lens Size parameters</td>
-                      <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.sizeInfo}</td>
-                    </tr>
-                    <tr className="border-b border-gray-100 dark:border-gray-850">
-                      <td className="py-2.5 text-gray-400">Target Audience</td>
-                      <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.gender}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              {product.features && (
-                <div className="md:col-span-2">
-                  <h3 className="font-bold text-xs uppercase tracking-wider text-gray-450 dark:text-gray-500 mb-3">Product Highlights</h3>
-                  <ul className="list-disc list-inside text-xs md:text-sm space-y-1 text-gray-600 dark:text-gray-300">
-                    {product.features.map((feat, idx) => (
-                      <li key={idx}>{feat}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+        {/* Technical specifications sheet */}
+        {isContactLens ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
+            <div>
+              <h3 className="font-bold text-xs uppercase tracking-wider text-gray-450 dark:text-gray-500 mb-3">Lens Details</h3>
+              <table className="w-full text-xs md:text-sm">
+                <tbody>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Brand Manufacturer</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.brand}</td>
+                  </tr>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Lens Type</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.subCategory || "Contact Lenses"}</td>
+                  </tr>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Lens Color / Tint</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.frameColor || "Clear"}</td>
+                  </tr>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Material Type</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.frameMaterial || "Etafilcon A (Hydrogel)"}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          ) : (
-            /* Review Feed & Form */
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Review List */}
-              <div className="lg:col-span-7 space-y-6">
-                {localReviews.map((rev, idx) => (
-                  <div key={idx} className="bg-gray-50 dark:bg-gray-900/60 p-5 rounded-xl border border-gray-100 dark:border-gray-850">
-                    <div className="flex justify-between items-center mb-2">
-                      <h4 className="font-bold text-xs md:text-sm text-gray-800 dark:text-white">{rev.name}</h4>
-                      <span className="text-[10px] text-gray-400">{rev.date}</span>
-                    </div>
-                    <div className="flex text-amber-500 text-[10px] gap-0.5 mb-3">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <FaStar key={i} className={i < Math.floor(rev.rating) ? "text-amber-500" : "text-gray-300"} />
-                      ))}
-                    </div>
-                    <p className="text-xs md:text-sm text-gray-600 dark:text-gray-350 leading-relaxed font-light">
-                      {rev.comment}
-                    </p>
-                  </div>
-                ))}
-              </div>
 
-              {/* Review submission Form */}
-              <div className="lg:col-span-5 bg-gray-50 dark:bg-gray-900 border border-gray-150 dark:border-gray-800 rounded-xl p-6 shadow-premium">
-                <h3 className="font-serif text-lg font-bold text-gray-800 dark:text-white mb-4">Write a Customer Review</h3>
-                <form onSubmit={handleReviewSubmit} className="space-y-4 text-xs md:text-sm">
-                  {/* Rating Selector */}
-                  <div className="space-y-1.5">
-                    <label className="font-bold text-gray-450 dark:text-gray-500 uppercase tracking-wider block">Rating</label>
-                    <div className="flex gap-2">
-                      {[1, 2, 3, 4, 5].map((val) => (
-                        <button
-                          key={val}
-                          type="button"
-                          onClick={() => setUserRating(val)}
-                          className={`w-9 h-9 rounded-full flex items-center justify-center font-bold transition-all border ${
-                            userRating === val
-                              ? "bg-primary border-primary text-white dark:bg-gold dark:border-gold dark:text-gray-950 shadow"
-                              : "border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-350 hover:bg-gray-100 dark:hover:bg-gray-800"
-                          }`}
-                        >
-                          {val}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Name Input */}
-                  <div className="space-y-1.5">
-                    <label className="font-bold text-gray-450 dark:text-gray-500 uppercase tracking-wider block">Your Name</label>
-                    <input
-                      type="text"
-                      placeholder="Enter name"
-                      value={userReviewName}
-                      onChange={(e) => setUserReviewName(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-250 dark:border-gray-800 rounded bg-white dark:bg-gray-950 dark:text-white text-xs"
-                      required
-                    />
-                  </div>
-
-                  {/* Message Input */}
-                  <div className="space-y-1.5">
-                    <label className="font-bold text-gray-450 dark:text-gray-500 uppercase tracking-wider block">Review Comments</label>
-                    <textarea
-                      rows="4"
-                      placeholder="Write review details..."
-                      value={userReviewComment}
-                      onChange={(e) => setUserReviewComment(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-250 dark:border-gray-800 rounded bg-white dark:bg-gray-950 dark:text-white text-xs"
-                      required
-                    />
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    className="w-full bg-primary hover:bg-gold text-white dark:bg-gold dark:text-gray-950 font-bold py-3 rounded text-xs uppercase tracking-wider transition-all"
-                  >
-                    Submit Review
-                  </button>
-                </form>
-              </div>
+            <div>
+              <h3 className="font-bold text-xs uppercase tracking-wider text-gray-450 dark:text-gray-500 mb-3">Lens Specifications</h3>
+              <table className="w-full text-xs md:text-sm">
+                <tbody>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Packaging Type</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.size || "Standard Box"}</td>
+                  </tr>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Lens Size parameters</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.sizeInfo || "Base Curve: 8.5mm, Diameter: 14.2mm"}</td>
+                  </tr>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Target Audience</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.gender || "Unisex"}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          )}
-        </div>
+
+            {product.features && (
+              <div className="md:col-span-2">
+                <h3 className="font-bold text-xs uppercase tracking-wider text-gray-450 dark:text-gray-500 mb-3">Product Highlights</h3>
+                <ul className="list-disc list-inside text-xs md:text-sm space-y-1 text-gray-600 dark:text-gray-300">
+                  {product.features.map((feat, idx) => (
+                    <li key={idx}>{feat}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
+            <div>
+              <h3 className="font-bold text-xs uppercase tracking-wider text-gray-450 dark:text-gray-500 mb-3">Frame Details</h3>
+              <table className="w-full text-xs md:text-sm">
+                <tbody>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Brand Manufacturer</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.brand}</td>
+                  </tr>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Frame Structure</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.frameShape}</td>
+                  </tr>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Primary Color</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.frameColor}</td>
+                  </tr>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Material Type</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.frameMaterial}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-xs uppercase tracking-wider text-gray-450 dark:text-gray-500 mb-3">Size & Fit</h3>
+              <table className="w-full text-xs md:text-sm">
+                <tbody>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Frame Width Status</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.size}</td>
+                  </tr>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Lens Size parameters</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.sizeInfo}</td>
+                  </tr>
+                  <tr className="border-b border-gray-100 dark:border-gray-850">
+                    <td className="py-2.5 text-gray-400">Target Audience</td>
+                    <td className="py-2.5 font-semibold text-gray-800 dark:text-white">{product.gender}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {product.features && (
+              <div className="md:col-span-2">
+                <h3 className="font-bold text-xs uppercase tracking-wider text-gray-450 dark:text-gray-500 mb-3">Product Highlights</h3>
+                <ul className="list-disc list-inside text-xs md:text-sm space-y-1 text-gray-600 dark:text-gray-300">
+                  {product.features.map((feat, idx) => (
+                    <li key={idx}>{feat}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
       </section>
 
       {/* Related Products Recommendation */}

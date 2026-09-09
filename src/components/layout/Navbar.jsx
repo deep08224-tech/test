@@ -76,6 +76,7 @@ const Navbar = ({ onOpenWishlist }) => {
   };
 
   const mainNavLinks = [
+    { label: "HOME", path: "/" },
     { label: "SUNGLASSES", path: "/products?category=sunglasses" },
     { label: "OPTICALS", path: "/products?category=eyeglasses" },
     { label: "CONTACT LENSES", path: "/products?category=contact-lenses" },
@@ -122,7 +123,7 @@ const Navbar = ({ onOpenWishlist }) => {
 
         {/* 2. Top Header Canvas: Services/Contact | Logo | Search/Cart/Book Button */}
         <div className="border-b border-gray-100 bg-white">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-8 md:px-12 py-3 flex items-center justify-between">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-8 md:px-12 py-1.5 flex items-center justify-between">
             {/* Left Utilities: Services & Contact Us (Desktop) */}
             <div className="hidden lg:flex items-center space-x-6 text-[11px] tracking-[0.14em] text-[#1C1B1B]">
               <Link
@@ -151,14 +152,14 @@ const Navbar = ({ onOpenWishlist }) => {
             </div>
 
             {/* Center: Brand Typography */}
-            <Link to="/" className="flex flex-col text-center items-center group py-0.5">
-              <span className="text-[8px] sm:text-[9px] font-sans font-semibold text-gray-400 tracking-[0.2em] uppercase leading-none mb-1">
+            <Link to="/" className="flex flex-col text-center items-center group py-0">
+              <span className="text-[9px] sm:text-[10px] font-sans font-bold text-gray-500 tracking-[0.22em] uppercase leading-none mb-0.5">
                 Dr. Kuckreja's
               </span>
-              <span className="font-serif text-[18px] sm:text-2xl md:text-3xl font-black uppercase tracking-[0.22em] text-[#7A1519] leading-none">
+              <span className="font-serif text-[22px] sm:text-3xl md:text-4xl font-black uppercase tracking-[0.22em] text-[#7A1519] leading-none [text-shadow:_0_0_1px_#7A1519] [-webkit-text-stroke:0.5px_#7A1519]">
                 Paradise Optics
               </span>
-              <span className="hidden sm:block text-[8px] md:text-[9px] font-sans font-medium text-gray-400 uppercase tracking-[0.25em] mt-1">
+              <span className="hidden sm:block text-[8px] md:text-[9px] font-sans font-semibold text-gray-500 uppercase tracking-[0.25em] mt-[2px]">
                 Clear Vision. Better Living. Since 1990.
               </span>
             </Link>
@@ -203,7 +204,7 @@ const Navbar = ({ onOpenWishlist }) => {
         </div>
 
         {/* 3. Main Centered Menu Bar */}
-        <nav className="hidden lg:block bg-white py-2.5">
+        <nav className="hidden lg:block bg-white py-1.5">
           <div className="max-w-[1440px] mx-auto px-6 flex items-center justify-center space-x-10 text-[12px] tracking-[0.15em] text-[#1C1B1B]">
             {mainNavLinks.map((link, idx) => {
               const active = isLinkActive(link.path);

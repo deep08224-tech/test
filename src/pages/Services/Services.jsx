@@ -10,35 +10,35 @@ const Services = () => {
       number: "01",
       title: "Comprehensive Eye Examination",
       description: "We reject automated, machine-only shortcuts. Exceptional optical correction begins with an exhaustive evaluation of visual function, ocular health, and personal lifestyle demands. Our practitioners conduct thorough subjective refractions, binocular alignment evaluations, digital eye strain screenings, and anterior segment health checks.",
-      image: "https://images.unsplash.com/photo-1579684389782-64d84b5e901a?q=80&w=800&auto=format&fit=crop"
+      image: "/Comprehensive Eye Examination.jpg"
     },
     {
       id: 2,
       number: "02",
       title: "Progressive and Occupational Lens Dispensing",
       description: "Modern visual demands require continuous visual clarity without distortion or compromised posture. We specialize in custom digital progressive and occupational lens designs, engineered specifically for your distinct habits—from extended digital screen sessions to dynamic distance vision. Every pair is custom-crafted to your unique ocular measurements, accounting for bridge fitting, frame wrap angle, vertex distance, and pantoscopic tilt to guarantee smooth, natural visual transitions across every focal plane.",
-      image: "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?q=80&w=800&auto=format&fit=crop"
+      image: "/Progressive and Occupational Lens Dispensing.jpg"
     },
     {
       id: 3,
       number: "03",
       title: "Specialized Dispensing & Medical Prosthetic",
       description: "We engineer custom spectacle solutions for complex ocular-facial biomechanics and sensory support. Our dispensing masters craft specialized adaptations including mechanical ptosis crutches for eyelid elevation, pressure-relieved frames customized for behind-the-ear hearing aids, ground-in prism systems for diplopia, and custom moisture-retaining enclosures for chronic ocular surface disease. Every frame is hand-modified and balanced at the bench to solve severe visual, craniofacial, and ergonomic challenges where standard off-the-shelf eyewear fails.",
-      image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=800&auto=format&fit=crop"
+      image: "/sdm.jpg"
     },
     {
       id: 4,
       number: "04",
       title: "Specialty Contact Lens Fitting",
       description: "For patients seeking freedom from traditional spectacles or requiring complex visual rehabilitation, our fellowship-trained practitioners provide dedicated corneal fitting solutions. We offer individualized consultations for daily disposable soft lenses, multifocal contact lenses, advanced toric corrections for astigmatism, and specialized rigid gas-permeable (RGP) or scleral lenses for irregular corneas and keratoconus. Every fitting includes comprehensive corneal topography and trial balancing to ensure absolute ocular health, hydration, and sharp visual acuity.",
-      image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop"
+      image: "/contact.jpg"
     },
     {
       id: 5,
       number: "05",
       title: "Private Eyewear Styling & Frame Fitting",
       description: "Selecting the ideal frame is an intimate balance between facial geometry, optical physics, and personal identity. During a dedicated private consultation, our optical stylists curate selections from our permanent collection of premier international fashion houses, matching frame weights, acetate hues, and titanium profiles to your facial architecture. Once chosen, each piece is meticulously hand-adjusted, temple-curved, and bridge-balanced to ensure weightless all-day comfort and precise lens alignment.",
-      image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=800&auto=format&fit=crop"
+      image: "/pes.jpg"
     }
   ];
 
@@ -74,7 +74,7 @@ const Services = () => {
                   <img
                     src={srv.image}
                     alt={srv.title}
-                    className="w-full h-full object-cover object-center hover:scale-103 transition-transform duration-700"
+                    className="w-full h-full object-fill hover:scale-103 transition-transform duration-700"
                   />
                   <div className="absolute top-3 left-3 bg-[#1C1B1B]/80 backdrop-blur-xs text-white px-2.5 py-1 rounded text-[10px] font-mono font-bold tracking-widest">
                     {srv.number}

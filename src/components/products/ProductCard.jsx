@@ -4,17 +4,28 @@ import { Link } from "react-router-dom";
 const ProductCard = ({ product }) => {
   const currentPrice = product.discountPrice || product.price;
 
+  const isContactLens =
+    product.category?.toLowerCase().includes("contact") ||
+    product.category?.toLowerCase().includes("lenses") ||
+    product.subCategory?.toLowerCase().includes("contact");
+
   return (
     <div className="group relative bg-white border border-gray-200/90 rounded-xl p-4 sm:p-5 flex flex-col justify-between h-full hover:shadow-md hover:border-gray-300 transition-all duration-300 text-left">
       {/* Product Image Area */}
       <Link
         to={`/product/${product.id}`}
-        className="relative aspect-square w-full flex items-center justify-center p-2 mb-3 overflow-hidden rounded-lg bg-gray-50/50"
+        className={`relative aspect-square w-full flex items-center justify-center mb-3 overflow-hidden rounded-lg bg-gray-50/50 ${
+          isContactLens ? "p-1" : "p-2"
+        }`}
       >
         <img
           src={product.images[0]}
           alt={product.name}
-          className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+          className={`max-h-full max-w-full object-contain transition-transform duration-300 ${
+            isContactLens
+              ? "scale-[1.65] sm:scale-[1.75] group-hover:scale-[1.85] drop-shadow-sm"
+              : "group-hover:scale-105"
+          }`}
           loading="lazy"
         />
 

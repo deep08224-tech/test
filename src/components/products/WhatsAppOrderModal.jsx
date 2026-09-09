@@ -1,67 +1,102 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaTimes, FaWhatsapp, FaStore, FaTruck, FaLock } from "react-icons/fa";
+import { FaTimes, FaWhatsapp, FaStore, FaTruck, FaLock, FaChevronDown } from "react-icons/fa";
 import { CONTACT_INFO } from "../../constants";
-import { useProducts } from "../../context/ProductContext";
+
+// Custom Dropdown Component to avoid native browser select positioning glitches inside transformed modals
+const CustomSelect = ({ value, onChange, options, placeholder = "Select", direction = "down" }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const dropdownPositionClass = direction === "up" ? "bottom-full mb-1" : "top-full mt-1";
+
+  return (
+    <div className="relative w-full" ref={dropdownRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full bg-white dark:bg-[#0c1222] border border-gray-300 dark:border-gray-700 rounded-lg py-1.5 px-2.5 text-xs text-left text-gray-800 dark:text-gray-200 flex items-center justify-between focus:outline-none focus:border-primary dark:focus:border-gold transition-all shadow-sm"
+      >
+        <span className={value ? "font-semibold text-gray-900 dark:text-white" : "text-gray-400 dark:text-gray-400 font-normal"}>
+          {value || placeholder}
+        </span>
+        <FaChevronDown className={`text-[10px] text-gray-400 transition-transform duration-200 flex-shrink-0 ml-1 ${isOpen ? "rotate-180 text-primary dark:text-gold" : ""}`} />
+      </button>
+
+      {isOpen && (
+        <div className={`absolute left-0 right-0 ${dropdownPositionClass} max-h-44 overflow-y-auto bg-white dark:bg-[#141b2d] border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 py-1 text-xs`}>
+          <button
+            type="button"
+            onClick={() => { onChange(""); setIsOpen(false); }}
+            className={`w-full text-left px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${!value ? "text-primary dark:text-gold font-bold bg-primary/5 dark:bg-gold/5" : "text-gray-400 dark:text-gray-400"}`}
+          >
+            Select
+          </button>
+          {options.map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => { onChange(opt); setIsOpen(false); }}
+              className={`w-full text-left px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${value === opt ? "text-primary dark:text-gold font-bold bg-primary/5 dark:bg-gold/5" : "text-gray-700 dark:text-gray-200"}`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const WhatsAppOrderModal = ({ product, isOpen, onClose }) => {
   if (!product) return null;
 
-  const { coupons } = useProducts();
-
   const [customerName, setCustomerName] = useState("");
   const [fulfillment, setFulfillment] = useState("Delivery"); // "Delivery" or "Pickup"
   const [address, setAddress] = useState("");
-  const [promoCode, setPromoCode] = useState("");
-  const [appliedPromo, setAppliedPromo] = useState("");
-  const [discountPercent, setDiscountPercent] = useState(0);
-  const [prescription, setPrescription] = useState("");
+
+  // Power Prescription Grid State
+  const [requestCallback, setRequestCallback] = useState(false);
+  const [leftSph, setLeftSph] = useState("");
+  const [rightSph, setRightSph] = useState("");
+  const [leftCyl, setLeftCyl] = useState("");
+  const [rightCyl, setRightCyl] = useState("");
+  const [leftAxis, setLeftAxis] = useState("");
+  const [rightAxis, setRightAxis] = useState("");
+  const [leftBoxes, setLeftBoxes] = useState("");
+  const [rightBoxes, setRightBoxes] = useState("");
+  const [prescriptionNotes, setPrescriptionNotes] = useState("");
 
   const originalPrice = product.discountPrice || product.price;
-  
-  // Recalculate Subtotal
-  const discountAmount = Math.round((originalPrice * discountPercent) / 100);
-  const subtotal = originalPrice - discountAmount;
 
-  const handleApplyPromo = (e) => {
-    e.preventDefault();
-    const code = promoCode.trim().toUpperCase();
-    
-    // Find matching coupon in active database listings
-    const matchedCoupon = coupons.find(
-      (c) => c.code.toUpperCase() === code && c.active
-    );
+  // Options arrays
+  const sphOptions = [
+    "Plano (0.00)",
+    "-0.25", "-0.50", "-0.75", "-1.00", "-1.25", "-1.50", "-1.75", "-2.00",
+    "-2.25", "-2.50", "-2.75", "-3.00", "-3.25", "-3.50", "-3.75", "-4.00",
+    "-4.25", "-4.50", "-4.75", "-5.00", "-5.25", "-5.50", "-5.75", "-6.00",
+    "+0.25", "+0.50", "+0.75", "+1.00", "+1.25", "+1.50", "+1.75", "+2.00",
+    "+2.25", "+2.50", "+2.75", "+3.00", "+3.25", "+3.50", "+3.75", "+4.00"
+  ];
 
-    if (matchedCoupon) {
-      // Check minimum purchase amount if applicable
-      if (matchedCoupon.minPurchase && originalPrice < matchedCoupon.minPurchase) {
-        if (window.showToast) {
-          window.showToast(
-            `Minimum purchase of ₹${matchedCoupon.minPurchase.toLocaleString("en-IN")} required for code ${matchedCoupon.code}.`,
-            "error"
-          );
-        }
-        return;
-      }
+  const cylOptions = ["None (0.00)", "-0.75", "-1.25", "-1.75", "-2.25", "-2.75"];
 
-      setDiscountPercent(matchedCoupon.discount);
-      setAppliedPromo(matchedCoupon.code);
-      if (window.showToast) {
-        window.showToast(`Promo Code ${matchedCoupon.code} Applied! ${matchedCoupon.discount}% Discount Saved.`, "success");
-      }
-    } else {
-      // Fallback fallback checks for absolute reliability
-      if (code === "OPTICVIP") {
-        setDiscountPercent(15);
-        setAppliedPromo("OPTICVIP");
-        if (window.showToast) window.showToast("Promo Code OPTICVIP Applied! 15% Discount Saved.", "success");
-      } else {
-        if (window.showToast) {
-          window.showToast("Invalid or Expired Promo Code", "error");
-        }
-      }
-    }
-  };
+  const axisOptions = [
+    "10°", "20°", "30°", "40°", "50°", "60°", "70°", "80°", "90°",
+    "100°", "110°", "120°", "130°", "140°", "150°", "160°", "170°", "180°"
+  ];
+
+  const boxesOptions = ["1 Box", "2 Boxes", "3 Boxes", "4 Boxes", "5 Boxes", "6 Boxes", "10 Boxes"];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -74,19 +109,42 @@ const WhatsAppOrderModal = ({ product, isOpen, onClose }) => {
       return;
     }
 
-    // Determine lens and power choice
-    const prescriptionText = prescription.trim() || "Frame Only / No Prescription";
+    // Compile Prescription Text
+    let prescriptionSummary = "";
+    if (requestCallback) {
+      prescriptionSummary = "📞 Request a callback to check my power";
+    } else {
+      const leftParts = [
+        leftSph && `SPH: ${leftSph}`,
+        leftCyl && `CYL: ${leftCyl}`,
+        leftAxis && `Axis: ${leftAxis}`,
+        leftBoxes && `Boxes: ${leftBoxes}`
+      ].filter(Boolean);
 
-    // Compile Receipt text matching user format exactly
+      const rightParts = [
+        rightSph && `SPH: ${rightSph}`,
+        rightCyl && `CYL: ${rightCyl}`,
+        rightAxis && `Axis: ${rightAxis}`,
+        rightBoxes && `Boxes: ${rightBoxes}`
+      ].filter(Boolean);
+
+      const details = [];
+      if (leftParts.length > 0) details.push(`Left (OS): [${leftParts.join(", ")}]`);
+      if (rightParts.length > 0) details.push(`Right (OD): [${rightParts.join(", ")}]`);
+      if (prescriptionNotes.trim()) details.push(`Notes: ${prescriptionNotes.trim()}`);
+
+      prescriptionSummary = details.length > 0 ? details.join(" | ") : "Frame Only / No Specific Power Selected";
+    }
+
+    // Compile Receipt text
     const orderMsg = `🛍️ *PARADISE OPTICS - NEW ORDER*
 ---------------------------------------
 👓 *Product:* ${product.name}
 🏷️ *Brand:* ${product.brand}
-💰 *Price:* ₹${subtotal.toLocaleString("en-IN")}${appliedPromo ? ` (Promo ${appliedPromo} Applied - ${discountPercent}% Off)` : ""}
+💰 *Price:* ₹${originalPrice.toLocaleString("en-IN")}
 ---------------------------------------
 👤 *Customer Name:* ${customerName.trim()}
-⚙️ *Lens Selection:* ${prescription.trim() ? "Single Vision / Prescription" : "Frame Only"}
-👁️ *Prescription:* ${prescriptionText}
+👁️ *Prescription / Power:* ${prescriptionSummary}
 🚚 *Fulfillment:* ${fulfillment === "Delivery" ? "Home Delivery" : "Store Pickup"}
 ${fulfillment === "Delivery" ? `📍 *Delivery Address:* ${address.trim()}` : ""}
 ---------------------------------------
@@ -95,7 +153,7 @@ ${fulfillment === "Delivery" ? `📍 *Delivery Address:* ${address.trim()}` : ""
     // Open WhatsApp
     const waUrl = `https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(orderMsg)}`;
     window.open(waUrl, "_blank", "noopener,noreferrer");
-    
+
     if (window.showToast) {
       window.showToast("Redirecting to WhatsApp...", "success");
     }
@@ -117,10 +175,10 @@ ${fulfillment === "Delivery" ? `📍 *Delivery Address:* ${address.trim()}` : ""
 
           {/* Modal content container */}
           <motion.div
-            initial={{ scale: 0.95, y: 20, opacity: 0 }}
-            animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{ scale: 0.95, y: 20, opacity: 0 }}
-            className="relative bg-white dark:bg-[#0b0f19] border border-gray-200 dark:border-gray-800 rounded-2xl w-full max-w-4xl shadow-2xl overflow-hidden overflow-x-hidden max-h-[90vh] flex flex-col z-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="relative bg-white dark:bg-[#0b0f19] border border-gray-200 dark:border-gray-800 rounded-2xl w-full max-w-4xl shadow-2xl flex flex-col z-10 overflow-hidden max-h-[92vh]"
           >
             {/* Close Button */}
             <button
@@ -169,7 +227,7 @@ ${fulfillment === "Delivery" ? `📍 *Delivery Address:* ${address.trim()}` : ""
                     Subtotal
                   </span>
                   <span className="text-2xl font-serif font-black text-primary dark:text-gold">
-                    ₹{subtotal.toLocaleString("en-IN")}
+                    ₹{originalPrice.toLocaleString("en-IN")}
                   </span>
                 </div>
               </div>
@@ -254,46 +312,130 @@ ${fulfillment === "Delivery" ? `📍 *Delivery Address:* ${address.trim()}` : ""
                     </div>
                   )}
 
-                  {/* Voucher / Promo Code */}
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-gray-555 dark:text-gray-400 uppercase tracking-widest block">
-                      Voucher / Promo Code
-                    </label>
-                    <div className="flex gap-2 w-full">
+                  {/* Lens Power Prescription Section matching reference layout */}
+                  <div className="space-y-3 pt-2">
+                    {/* Request Callback Checkbox */}
+                    <label className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-gray-750 dark:text-gray-250">
                       <input
-                        type="text"
-                        placeholder="e.g. OPTICVIP"
-                        value={promoCode}
-                        onChange={(e) => setPromoCode(e.target.value)}
-                        className="flex-grow min-w-0 w-full bg-gray-50 dark:bg-[#141b2d] border border-gray-200 dark:border-gray-800 rounded-lg py-2.5 px-4 text-base md:text-sm text-gray-800 dark:text-white focus:outline-none focus:border-primary dark:focus:border-gold placeholder-gray-400 dark:placeholder-gray-655"
+                        type="checkbox"
+                        checked={requestCallback}
+                        onChange={(e) => setRequestCallback(e.target.checked)}
+                        className="w-4 h-4 rounded border-gray-300 accent-primary dark:accent-gold cursor-pointer"
                       />
-                      <button
-                        type="button"
-                        onClick={handleApplyPromo}
-                        className="flex-shrink-0 bg-primary hover:bg-[#c5a880] hover:text-gray-950 text-white font-bold px-4 sm:px-6 rounded-lg text-xs uppercase tracking-wider transition-all"
-                      >
-                        Apply
-                      </button>
-                    </div>
-                    {appliedPromo && (
-                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold block mt-1">
-                        ✓ Promo Code {appliedPromo} applied successfully! Saved {discountPercent}% Off.
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Lens Prescription */}
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-gray-555 dark:text-gray-400 uppercase tracking-widest block">
-                      Lens Prescription / Frame Adjustments
+                      <span>Request a callback to check my power</span>
                     </label>
-                    <textarea
-                      rows="2.5"
-                      placeholder="e.g. Sph: -1.50, Cyl: -0.50, Axis: 90 / Blue cut anti-glare coating..."
-                      value={prescription}
-                      onChange={(e) => setPrescription(e.target.value)}
-                      className="w-full bg-gray-50 dark:bg-[#141b2d] border border-gray-200 dark:border-gray-800 rounded-lg py-2 px-4 text-base md:text-sm text-gray-800 dark:text-white focus:outline-none focus:border-primary dark:focus:border-gold placeholder-gray-400 dark:placeholder-gray-650 resize-none"
-                    />
+
+                    {/* Power Selection Grid */}
+                    {!requestCallback && (
+                      <div className="space-y-2.5 bg-gray-50/80 dark:bg-[#141b2d]/80 p-3.5 sm:p-4 rounded-xl border border-gray-200/90 dark:border-gray-800 shadow-sm">
+                        {/* Grid Header */}
+                        <div className="grid grid-cols-12 items-center text-xs font-bold text-gray-850 dark:text-gray-150 border-b border-gray-200 dark:border-gray-800 pb-2">
+                          <div className="col-span-4 uppercase tracking-wider text-[11px]">Power</div>
+                          <div className="col-span-4 text-center">Left(OS)</div>
+                          <div className="col-span-4 text-center">Right(OD)</div>
+                        </div>
+
+                        {/* SPH Row */}
+                        <div className="grid grid-cols-12 items-center text-xs gap-2">
+                          <div className="col-span-4 font-semibold text-gray-700 dark:text-gray-300">SPH</div>
+                          <div className="col-span-4">
+                            <CustomSelect
+                              value={leftSph}
+                              onChange={setLeftSph}
+                              options={sphOptions}
+                              placeholder="Select"
+                            />
+                          </div>
+                          <div className="col-span-4">
+                            <CustomSelect
+                              value={rightSph}
+                              onChange={setRightSph}
+                              options={sphOptions}
+                              placeholder="Select"
+                            />
+                          </div>
+                        </div>
+
+                        {/* CYL Row */}
+                        <div className="grid grid-cols-12 items-center text-xs gap-2">
+                          <div className="col-span-4 font-semibold text-gray-700 dark:text-gray-300">CYL</div>
+                          <div className="col-span-4">
+                            <CustomSelect
+                              value={leftCyl}
+                              onChange={setLeftCyl}
+                              options={cylOptions}
+                              placeholder="Select"
+                            />
+                          </div>
+                          <div className="col-span-4">
+                            <CustomSelect
+                              value={rightCyl}
+                              onChange={setRightCyl}
+                              options={cylOptions}
+                              placeholder="Select"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Axis Row */}
+                        <div className="grid grid-cols-12 items-center text-xs gap-2">
+                          <div className="col-span-4 font-semibold text-gray-700 dark:text-gray-300">Axis</div>
+                          <div className="col-span-4">
+                            <CustomSelect
+                              value={leftAxis}
+                              onChange={setLeftAxis}
+                              options={axisOptions}
+                              placeholder="Select"
+                            />
+                          </div>
+                          <div className="col-span-4">
+                            <CustomSelect
+                              value={rightAxis}
+                              onChange={setRightAxis}
+                              options={axisOptions}
+                              placeholder="Select"
+                            />
+                          </div>
+                        </div>
+
+                        {/* No of boxes Row */}
+                        <div className="grid grid-cols-12 items-center text-xs gap-2">
+                          <div className="col-span-4 font-semibold text-gray-700 dark:text-gray-300">No of boxes</div>
+                          <div className="col-span-4">
+                            <CustomSelect
+                              value={leftBoxes}
+                              onChange={setLeftBoxes}
+                              options={boxesOptions}
+                              placeholder="Select"
+                              direction="up"
+                            />
+                          </div>
+                          <div className="col-span-4">
+                            <CustomSelect
+                              value={rightBoxes}
+                              onChange={setRightBoxes}
+                              options={boxesOptions}
+                              placeholder="Select"
+                              direction="up"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Additional Notes */}
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-gray-555 dark:text-gray-400 uppercase tracking-widest block">
+                        Additional Notes / Custom Instructions
+                      </label>
+                      <textarea
+                        rows="2"
+                        placeholder="e.g. Frame adjustments, progressive lens preference, or blue-cut coating request..."
+                        value={prescriptionNotes}
+                        onChange={(e) => setPrescriptionNotes(e.target.value)}
+                        className="w-full bg-gray-50 dark:bg-[#141b2d] border border-gray-200 dark:border-gray-800 rounded-lg py-2 px-4 text-xs text-gray-800 dark:text-white focus:outline-none focus:border-primary dark:focus:border-gold placeholder-gray-400 dark:placeholder-gray-650 resize-none"
+                      />
+                    </div>
                   </div>
 
                   {/* Store Pickup address snippet */}
@@ -310,7 +452,7 @@ ${fulfillment === "Delivery" ? `📍 *Delivery Address:* ${address.trim()}` : ""
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full flex items-center justify-center gap-2 py-4 bg-[#00b275] hover:bg-[#00c782] active:scale-98 text-white rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-lg"
+                      className="w-full flex items-center justify-center gap-2 py-4 bg-[#00b275] hover:bg-[#00c782] active:scale-98 text-white rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-lg cursor-pointer"
                     >
                       <FaWhatsapp className="text-sm" />
                       <span>Send Order to WhatsApp Lab</span>
@@ -332,3 +474,4 @@ ${fulfillment === "Delivery" ? `📍 *Delivery Address:* ${address.trim()}` : ""
 };
 
 export default WhatsAppOrderModal;
+

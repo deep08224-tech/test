@@ -24,6 +24,7 @@ const MobileMenu = ({ isOpen, onClose, onOpenWishlist }) => {
   }, [isOpen]);
 
   const menuItems = [
+    { label: "HOME", path: "/" },
     { label: "SUNGLASSES", path: "/products?category=sunglasses" },
     { label: "OPTICALS", path: "/products?category=eyeglasses" },
     { label: "CONTACT LENSES", path: "/products?category=contact-lenses" },

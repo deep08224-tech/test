@@ -36,28 +36,7 @@ const ScrollToTop = () => {
   return null;
 };
 
-// Scroll Progress Bar component
-const ScrollProgressBar = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalScroll > 0) {
-        setScrollProgress((window.scrollY / totalScroll) * 100);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  return (
-    <div
-      className="fixed top-0 left-0 h-1 bg-gold z-50 transition-all duration-100 ease-out"
-      style={{ width: `${scrollProgress}%` }}
-    />
-  );
-};
 
 // Back to Top button
 const BackToTopButton = () => {
@@ -121,7 +100,6 @@ function App() {
     <div className="flex flex-col min-h-screen bg-white dark:bg-gray-950 text-darkText dark:text-gray-100 transition-colors duration-300">
       {!isAdmin && <OfferPopup />}
       <ScrollToTop />
-      <ScrollProgressBar />
       
       {/* Premium Sticky Navigation Header */}
       {!isAdmin && <Navbar onOpenWishlist={() => setWishlistOpen(true)} />}
